@@ -1,0 +1,28 @@
+{
+  "name": "quoteapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "json.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "watch": "webpack --watch --mode development",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.29.3",
+    "browser-sync-webpack-plugin": "^2.3.0",
+    "file-loader": "^6.2.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.2"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2"
+  }
+}
