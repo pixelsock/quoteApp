@@ -266,12 +266,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     if (generateQuoteButton) {
         generateQuoteButton.addEventListener('click', () => {
-            const quoteItems = getQuoteItems(); // Implement this function based on your application
-            const finalTotal = getFinalTotal(); // Implement this function based on your application
-            const totalFreight = getTotalFreight(); // Implement this function based on your application
+            const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
+            const finalTotal = getFinalTotal(); // This should return the final total as a number
+            const totalFreight = getTotalFreight(); // This should return the total freight as a number
+            const quoteNumber = '12345'; // Replace with the actual quote number
 
             // Call the generatePDF function with the gathered data
-            generatePDF(quoteItems, finalTotal, totalFreight);
+            generatePDF(quoteItems, finalTotal, totalFreight, quoteNumber);
         });
     }
 });
@@ -395,23 +396,26 @@ function clearFormAndResetSelections() {
         const field = document.getElementById(fieldId);
         if (field) {
             field.value = ""; // Reset field value
+            console.log(`Field reset: ${fieldId}`); // Debugging line
+            field.dispatchEvent(new Event('change')); // Trigger change event to update UI
+        } else {
+            console.error(`Field not found: ${fieldId}`); // Debugging line
         }
     });
+
 
     // Clear the currentSelections object
     Object.keys(currentSelections).forEach(key => {
         currentSelections[key] = "";
+        console.log(`Selection cleared: ${key}`); // Debugging line
     });
 
     // Optionally, reset any UI elements or visibility states as needed
-    // For example, hide the "add-another" button again
     document.getElementById('add-another').style.display = 'none';
 
     // Reset visibility and UI state as needed
     updateFieldVisibility();
     updateTotals();
-
-    // If you have any additional UI reset logic, include it here
 }
 
 // Example implementations of the functions to gather data (you'll need to adjust these based on your actual data structure)
