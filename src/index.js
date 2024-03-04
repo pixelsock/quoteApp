@@ -1,4 +1,4 @@
-import jsonData from './data/output.json';
+// import jsonData from './data/output.json';
 import { generatePDF } from './generatePDF.js';
 
 
@@ -9,11 +9,13 @@ let currentSelections = {
     'size': "",
     'mirror-controls': "",
     'accessories': "",
-    'sku': ""
+    'sku': "",
+    'mounting-orientation': "", // New field
+    'frame-color': "", // New field
+    'color-temperature': "", // New field
+    'light-output': "", // New field
+    'dimming': "" // New field
 };
-
-
-
 
 function clearSelectOptions(selectElement) {
     while (selectElement.options.length > 0) {
@@ -24,18 +26,18 @@ function clearSelectOptions(selectElement) {
 function populateSelectField(selectElement, options, keepSelection = false) {
     const currentSelection = keepSelection ? selectElement.value : null; // Store current selection if needed
     clearSelectOptions(selectElement); // Clears the existing options
-    
+
     // Determine the text for the default option based on whether a selection has been made
     const defaultOptionText = currentSelection ? "Change This Selection" : "Select One...";
     const defaultOption = new Option(defaultOptionText, "");
     selectElement.add(defaultOption);
-    
+
     // Populate with new options
     options.forEach(optionValue => {
         const option = new Option(optionValue, optionValue);
         selectElement.add(option);
     });
-    
+
     // If keeping the selection and it's still valid, re-select it
     if (keepSelection && options.includes(currentSelection)) {
         selectElement.value = currentSelection;
@@ -50,11 +52,15 @@ function populateFormFields(jsonData) {
         'size': "Size",
         'mirror-controls': "Mirror Controls",
         'accessories': "Accessories",
-        
+
     };
 
     Object.entries(fields).forEach(([fieldId, jsonKey]) => {
         const selectElement = document.getElementById(fieldId);
+        if (!selectElement) {
+            console.warn(`Element with ID '${fieldId}' not found.`);
+            return; // Skip this iteration if the element doesn't exist
+        }
         const currentSelection = selectElement.value; // Store the current selection
         const options = [...new Set(jsonData.map(item => item[jsonKey]))];
         populateSelectField(selectElement, options);
@@ -66,6 +72,16 @@ function populateFormFields(jsonData) {
             // Handle cases where the selection does not exist anymore (e.g., reset to default or handle accordingly)
             selectElement.value = ""; // Reset to default or handle accordingly
         }
+    });
+
+
+    Object.entries(staticFieldOptions).forEach(([fieldId, options]) => {
+        const selectElement = document.getElementById(fieldId);
+        if (!selectElement) {
+            console.warn(`Element with ID '${fieldId}' not found.`);
+            return; // Skip this iteration if the element doesn't exist
+        }
+        populateSelectField(selectElement, options);
     });
 }
 
@@ -97,7 +113,7 @@ function filterJsonData(jsonData) {
         const selectionValue = currentSelections[selectionKey];
         if (selectionValue) {
             // Convert the selection key to the JSON key format
-            const jsonKey = selectionKey.split('-').map((word, index) => 
+            const jsonKey = selectionKey.split('-').map((word, index) =>
                 index === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : word)
                 .join(' ');
             filteredData = filteredData.filter(item => item[jsonKey] === selectionValue);
@@ -138,7 +154,7 @@ function updateFieldVisibility() {
     let anyFieldSelected = false; // Track if any field has been selected
 
     const fieldsBeforeQuantity = fieldOrder.filter(fieldId => fieldId !== 'quantity');
-    
+
     for (let i = 0; i < fieldsBeforeQuantity.length; i++) {
         const fieldId = fieldsBeforeQuantity[i];
         const wrapperId = `${fieldId}-wrapper`;
@@ -187,16 +203,16 @@ function setupDynamicFiltering(jsonData) {
 
     formFields.forEach(fieldId => {
         document.getElementById(fieldId).addEventListener('change', () => {
-           filteredData = jsonData;
+            filteredData = jsonData;
             // Update currentSelections based on the current state of all form fields
             formFields.forEach(fid => {
                 const selectedValue = document.getElementById(fid).value;
                 currentSelections[fid] = selectedValue;
                 if (selectedValue !== "") {
                     const key = fid.replace(/-/g, ' ')
-                                    .split(' ')
-                                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                    .join(' ');
+                        .split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(' ');
                     filteredData = filteredData.filter(item => item[key] === selectedValue);
                 }
             });
@@ -240,6 +256,8 @@ function updateFormFields(filteredData, formFields, currentFieldId) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    const response = await fetch('localhost:3000api/data');
+    const jsonData = await response.json();
     await populateFormFields(jsonData);
     setupDynamicFiltering(jsonData);
     updateFieldVisibility();
@@ -251,7 +269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     addAnotherButton.style.display = 'none';
 
     // Show the "add-another" button when the quantity field is updated
-    document.getElementById('quantity').addEventListener('change', function() {
+    document.getElementById('quantity').addEventListener('change', function () {
         if (this.value) {
             addAnotherButton.style.display = ''; // Show the button
         } else {
@@ -263,7 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     addAnotherButton.addEventListener('click', addFilteredItemToQuote);
 
     const generateQuoteButton = document.getElementById('generate-quote');
-    
+
     if (generateQuoteButton) {
         generateQuoteButton.addEventListener('click', () => {
             const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
@@ -329,7 +347,7 @@ function addFilteredItemToQuote() {
     }
 
     updateTotals();
-  
+
 }
 
 function calculateFreightCharge(mirrorSize, quantity) {
@@ -371,7 +389,7 @@ function updateTotals() {
         const quantity = parseInt(item.querySelector('[qs-value="quantity"]').textContent, 10);
         const price = parseFloat(item.querySelector('[qs-value="price"]').textContent.replace('$', ''));
         const freight = parseFloat(document.querySelector('[qs-value="freight"]').textContent.replace('$', ''));
-        
+
         totalQuantity += quantity;
         totalPrice += price + freight;
     });
@@ -379,11 +397,11 @@ function updateTotals() {
     // Update the total quantity and total price elements
     const totalElement = document.querySelector('[qs-value="total"]');
     const quantityTotalElement = document.querySelector('[qs-value="quantity-total"]');
-    
+
     if (totalElement) {
         totalElement.textContent = `$${totalPrice.toFixed(2)}`;
     }
-    
+
     if (quantityTotalElement) {
         quantityTotalElement.textContent = totalQuantity.toString();
     }
