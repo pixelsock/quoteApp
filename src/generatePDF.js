@@ -41,34 +41,47 @@ function generatePDF(quoteItems, finalTotal, totalFreight, quoteNumber, sku) {
     pdf.setDrawColor(0, 0, 0); // Set draw color to black
     pdf.line(40, 140, pdf.internal.pageSize.width - 40, 140); // Draw a line from left to right
 
-    // Add the table header and items
+    // Add the table header and items with added DESCRIPTION and FREIGHT
     autoTable(pdf, {
         startY: 150,
         styles: {
-            fontSize: 10, // Adjust as needed
-            cellPadding: 5, // Adjust as needed
+            fontSize: 10, // Default font size for the table
+            cellPadding: 5,
+        },
+       // make the table width the same size and the pdf.line above
+        tableWidth: 'auto',
+        columnStyles: {
+            0: { cellWidth: 60 }, // ITEM NUMBER
+            1: { cellWidth: 200 }, // DESCRIPTION
+            2: { cellWidth: 40 }, // QTY
+            3: { cellWidth: 60 }, // BASE
+            4: { cellWidth: 60 }, // FREIGHT
+            5: { cellWidth: 60 }, // TOTAL COST
         },
         headStyles: {
-            fillColor: [211, 211, 211], // A light gray background
-            textColor: [0, 0, 0], // Black text
+            fillColor: [211, 211, 211], // A light gray background for the header
+            textColor: [0, 0, 0], // Black text for the header
         },
-        head: [['QTY', 'ITEM NUMBER', 'DESCRIPTION', 'UNIT PRICE', 'TOTAL']],
+        head: [['ITEM NUMBER', 'DESCRIPTION', 'QTY', 'BASE', 'FREIGHT', 'TOTAL COST']],
         body: quoteItems.map(item => [
-            item.quantity, 
             item.product,
-            item.description, 
-            `$${(item.total_price / item.quantity || 0).toFixed(2)}`,
-            `$${(item.total_price || 0).toFixed(2)}` // Provide a default value of 0 if item.total_price is undefined
+            item.description,
+            item.quantity, 
+            `$${(Number(item.total_price) / item.quantity || 0).toFixed(2)}`, // Renamed to 'BASE'
+            `$${(Number(item.freight) || 0).toFixed(2)}`,
+            `$${(Number(item.total_price) || 0).toFixed(2)}`
         ]),
-    });
+        footStyles: {
+            fillColor: [4, 7, 7], // A dark gray background for the footer
 
-    // Add subtotal, freight, and total at the bottom of the table
-    const subtotalY = pdf.lastAutoTable.finalY + 10; // Adjust spacing as needed
-    pdf.setFontSize(10); // Adjust as needed
-    pdf.text(`Subtotal: $${finalTotal.toFixed(2)}`, 40, subtotalY);
-    pdf.text(`Freight: $${totalFreight.toFixed(2)}`, 40, subtotalY + 15); // Adjust line spacing as needed
-    pdf.setFontSize(12); // Larger font for total
-    pdf.text(`Total: $${(finalTotal + totalFreight).toFixed(2)}`, 40, subtotalY + 30); // Adjust line spacing as needed
+            textColor: [255, 255, 255], // White text
+            fontSize: 12, // Slightly larger text for the footer
+            cellPadding: 10, // Increased height for the footer
+        },
+        foot: [
+            ['TOTALS','', '', '', `$${totalFreight.toFixed(2)}`, `$${(finalTotal + totalFreight).toFixed(2)}`]
+        ]
+    });
 
     // Add footer notes - align to the left
     const notesY = pdf.internal.pageSize.height - 100; // Position from the bottom of the page
@@ -79,3 +92,4 @@ function generatePDF(quoteItems, finalTotal, totalFreight, quoteNumber, sku) {
     // Save the PDF
     window.open(pdf.output('bloburl'), '_blank');
 }
+
