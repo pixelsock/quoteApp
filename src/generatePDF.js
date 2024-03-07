@@ -91,4 +91,3 @@ function generatePDF(quoteItems, finalTotal, totalFreight, quoteNumber, sku) {
     // Save the PDF
     window.open(pdf.output('bloburl'), '_blank');
 }
-
