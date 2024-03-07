@@ -1,6 +1,5 @@
 import jsonData from './data/output.json';
 import { generatePDF } from './generatePDF.js';
-
 // for testing purposes if a user clicks on an item with data-w-id="3c2f2722-e3c7-6f05-8576-623a08bbaedd" it will select the first item in every dropdown and add a quantity of 1
 document.addEventListener('click', function(event) {
     if (event.target.getAttribute('data-w-id') === '3c2f2722-e3c7-6f05-8576-623a08bbaedd') {
