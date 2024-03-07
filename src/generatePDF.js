@@ -49,14 +49,13 @@ function generatePDF(quoteItems, finalTotal, totalFreight, quoteNumber, sku) {
             cellPadding: 5,
         },
        // make the table width the same size and the pdf.line above
-        tableWidth: 'auto',
         columnStyles: {
-            0: { cellWidth: 60 }, // ITEM NUMBER
-            1: { cellWidth: 200 }, // DESCRIPTION
+            0: { cellWidth: 140 }, // ITEM NUMBER
+            1: { cellWidth: 140 }, // DESCRIPTION
             2: { cellWidth: 40 }, // QTY
-            3: { cellWidth: 60 }, // BASE
-            4: { cellWidth: 60 }, // FREIGHT
-            5: { cellWidth: 60 }, // TOTAL COST
+            3: { cellWidth: 70 }, // BASE
+            4: { cellWidth: 70 }, // FREIGHT
+            5: { cellWidth: 70 }, // TOTAL COST
         },
         headStyles: {
             fillColor: [211, 211, 211], // A light gray background for the header
@@ -75,7 +74,7 @@ function generatePDF(quoteItems, finalTotal, totalFreight, quoteNumber, sku) {
             fillColor: [4, 7, 7], // A dark gray background for the footer
 
             textColor: [255, 255, 255], // White text
-            fontSize: 12, // Slightly larger text for the footer
+            fontSize: 10, // Slightly larger text for the footer
             cellPadding: 10, // Increased height for the footer
         },
         foot: [
