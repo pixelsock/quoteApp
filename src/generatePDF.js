@@ -61,7 +61,7 @@ function generatePDF(quoteItems, finalTotal, totalFreight, quoteNumber, sku) {
             fillColor: [211, 211, 211], // A light gray background for the header
             textColor: [0, 0, 0], // Black text for the header
         },
-        head: [['ITEM NUMBER', 'DESCRIPTION', 'QTY', 'BASE', 'FREIGHT', 'TOTAL COST']],
+        head: [['ITEM NUMBER', 'DESCRIPTION', 'QTY', 'BASE', 'FREIGHT', 'COST']],
         body: quoteItems.map(item => [
             item.product,
             item.description,
