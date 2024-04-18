@@ -11,5 +11,4 @@ jobs:
 
     steps:
     - name: Call jsDelivr purge URL
-      run: curl -X POST https://purge.jsdelivr.net/gh/pixelsock/quoteApp@latest/dist/bundle.js
-
+      run: curl -X GET https://purge.jsdelivr.net/gh/pixelsock/quoteApp@latest/dist/bundle.js
