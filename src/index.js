@@ -18,7 +18,7 @@ document.addEventListener('click', function(event) {
     }
 }
 );
-alert('This is a test alert');
+alert('This is a test alertingss');
 
 let currentSelections = {
     'product-line': "",
