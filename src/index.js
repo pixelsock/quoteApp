@@ -379,7 +379,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addAnotherButton = document.getElementById('add-another');
     addAnotherButton.style.display = 'none';
     const generateQuoteButton = document.getElementById('generate-quote');
-    generateQuoteButton.style.display = 'none'; // Initially hide the "generate-quote" button
+    const popUpButton = document.getElementById('pop-up');
+    // initially hide the popupbutton button
+    popUpButton.style.display = 'none';
+
+    
 
     // Show the "add-another" button when the quantity field is updated
     document.getElementById('quantity').addEventListener('change', function() {
@@ -395,7 +399,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Add event listener for the "add-another" button
     addAnotherButton.addEventListener('click', function() {
         addFilteredItemToQuote();
-        generateQuoteButton.style.display = ''; // Show the "generate-quote" button after adding an item
+        popUpButton.style.display = ''; // Show the "generate-quote" button after adding an item
     
     });
 
@@ -405,11 +409,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         generateQuoteButton.addEventListener('click', () => {
             const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
             const finalTotal = getFinalTotal(); // This should return the final total as a number
-            const totalFreight = getTotalFreight(); // This should return the total freight as a number
-            const quoteNumber = '12345'; // Replace with the actual quote number
-
+            const quoteNumber = new Date().getTime().toString().slice(-6); // Generate a unique 6-digit quote number based on timestamp
             // Call the generatePDF function with the gathered data
-            generatePDF(quoteItems, finalTotal, totalFreight, quoteNumber);
+            generatePDF(quoteItems, finalTotal, quoteNumber);
         });
     }
 });
@@ -423,63 +425,41 @@ function addFilteredItemToQuote() {
         alert('Please specify a quantity.');
         return;
     }
-    const mirrorSize = parseInt(currentSelections['size'], 10);
-
-    // Get the SKU and calculate the total price based on the quantity
-    const currentSelection = filteredData[0];
     const sku = generateSKU(currentSelections);
+    const currentSelection = filteredData[0];
     const basePrice = parseFloat(currentSelection['Total Price'].replace('$', ''));
-    const totalPrice = (basePrice * quantity).toFixed(2); // Assuming quantity affects total price linearly
-    const freightCharge = calculateFreightCharge(mirrorSize, quantity);
-    console.log('Freight charge:', freightCharge);
-
+    const totalPrice = (basePrice * quantity).toFixed(2);
 
     if (!sku) {
         console.error('No item selected or SKU details are missing.');
         return;
     }
 
-    // Clone the template and update its content
     const template = document.getElementById('qs-line-item-template');
     if (!template) {
         console.error('Template element not found.');
         return;
     }
 
-    const clone = template.content.cloneNode(true); // Ensure you're cloning the content for templates
+    const clone = template.content.cloneNode(true);
     const skuElement = clone.querySelector('[qs-value="sku"]');
     const quantityElement = clone.querySelector('[qs-value="quantity"]');
     const priceElement = clone.querySelector('[qs-value="price"]');
-    const freightElement = document.querySelector('[qs-value="freight"]');
-    const freightItemElement = clone.querySelector('[qs-value="item-freight"]');
-    if (freightItemElement) {
-        freightItemElement.textContent = `$${freightCharge}`;
-    }
     const descriptionElement = clone.querySelector('[qs-value="description"]');
     if (descriptionElement) {
         descriptionElement.textContent = description;
     }
-    // Update the freight total which is the sum of all freight item Elements
-    let freightTotal = 0;
-    const freightItems = document.querySelectorAll('[qs-value="item-freight"]');
-    freightItems.forEach(item => {
-        freightTotal += parseFloat(item.textContent.replace('$', ''));
-    });
-    freightElement.textContent = `$${freightTotal}`;
-    console.log('New freight total:', freightTotal);
     if (skuElement && quantityElement && priceElement) {
         skuElement.textContent = sku;
         quantityElement.textContent = quantity;
         priceElement.textContent = `$${totalPrice}`;
         document.getElementById('line-item-container').appendChild(clone);
-        // Need to create this function
         clearFormAndResetSelections();
     } else {
         console.error('One or more elements could not be found in the template.');
     }
 
     updateTotals();
-  
 }
 
 function clearFormAndResetSelections() {
@@ -497,9 +477,6 @@ function clearFormAndResetSelections() {
     // Optionally, you could also reset any visual feedback or additional UI elements that are affected by the selections.
     // For example, hiding the 'generate-quote' button again or clearing any displayed error messages.
     const generateQuoteButton = document.getElementById('generate-quote');
-    if (generateQuoteButton) {
-        generateQuoteButton.style.display = 'none'; // Assuming you want to hide it again after adding an item
-    }
 
     // Reset the quantity field separately if necessary
     const quantityField = document.getElementById('quantity');
@@ -513,84 +490,29 @@ function clearFormAndResetSelections() {
     // Call any additional functions needed to reset the state of the form or update the UI
 }
 
-// Then, this function should be called after a new quote item is added.
-// It's already correctly placed in the addFilteredItemToQuote function.
-
-
-function calculateFreightCharge(mirrorSize, quantity) {
-    if (mirrorSize < 3636) { // Mirrors smaller than 36"x36"
-        if (quantity <= 6) {
-            return 50 * quantity;
-        } else {
-            return calculateFreightChargeForTotal(quantity);
-        }
-    } else {
-        return calculateFreightChargeForTotal(quantity);
-    }
-}
-
-function calculateFreightChargeForTotal(totalQuantity) {
-    if (totalQuantity < 6) {
-        return 300;
-    } else if (totalQuantity >= 6 && totalQuantity < 11) {
-        return 450;
-    } else if (totalQuantity >= 11 && totalQuantity < 16) {
-        return 600;
-    } else if (totalQuantity >= 16 && totalQuantity < 21) {
-        return 700;
-    } else if (totalQuantity >= 21 && totalQuantity < 26) {
-        return 800;
-    } else {
-        console.log("For orders with more than 25 mirrors, please contact quotes@matrixmirrors.com.");
-        return 0; // Assuming you want to return 0 or handle this case differently.
-    }
-}
-
 function updateTotals() {
     let totalQuantity = 0;
     let totalPrice = 0.0;
-    let totalFreight = 0.0;
 
-    // Assuming each item added to the quote is within a container with a specific class
     const items = document.querySelectorAll('.qs-line-item-row');
     items.forEach(item => {
         const quantity = parseInt(item.querySelector('[qs-value="quantity"]').textContent, 10);
         const price = parseFloat(item.querySelector('[qs-value="price"]').textContent.replace('$', ''));
         totalQuantity += quantity;
-        totalPrice += price; // Only add the price here, freight is handled separately
+        totalPrice += price;
     });
 
-    // Calculate and update total freight
-    const freightElements = document.querySelectorAll('[qs-value="item-freight"]');
-    freightElements.forEach(element => {
-        const freightValue = parseFloat(element.textContent.replace('$', '')) || 0;
-        totalFreight += freightValue;
-    });
-
-    const totalFreightElement = document.querySelector('[qs-value="freight"]');
-    if (totalFreightElement) {
-        totalFreightElement.textContent = `$${totalFreight.toFixed(2)}`;
-    }
-
-    // Update the total quantity, total price, and total freight elements
     const totalElement = document.querySelector('[qs-value="total"]');
     const quantityTotalElement = document.querySelector('[qs-value="quantity-total"]');
-    const freightTotalElement = document.querySelector('[qs-value="freight-total"]'); // Assuming there's an element for freight total
     
     if (totalElement) {
-        totalElement.textContent = `$${(totalPrice + totalFreight).toFixed(2)}`; // Include freight in the total price displayed
+        totalElement.textContent = `$${totalPrice.toFixed(2)}`;
     }
     
     if (quantityTotalElement) {
         quantityTotalElement.textContent = totalQuantity.toString();
     }
-
-    if (freightTotalElement) {
-        freightTotalElement.textContent = `$${totalFreight.toFixed(2)}`; // Display the total freight separately
-    }
 }
-
-
 
 // Example implementations of the functions to gather data (you'll need to adjust these based on your actual data structure)
 function getQuoteItems() {
@@ -601,7 +523,6 @@ function getQuoteItems() {
             quantity: parseInt(item.querySelector('[qs-value="quantity"]').textContent, 10),
             product: item.querySelector('[qs-value="sku"]').textContent,
             description: item.querySelector('[qs-value="description"]').textContent,
-            freight: parseFloat(item.querySelector('[qs-value="item-freight"]').textContent.replace('$', '')),
             total_price: parseFloat(item.querySelector('[qs-value="price"]').textContent.replace('$', ''))
         };
     });
@@ -612,7 +533,3 @@ function getFinalTotal() {
     return parseFloat(document.querySelector('[qs-value="total"]').textContent.replace('$', ''));
 }
 
-function getTotalFreight() {
-    // Example: Fetching total freight from the DOM
-    return parseFloat(document.querySelector('[qs-value="freight"]').textContent.replace('$', ''));
-}
