@@ -1,4 +1,4 @@
-name: Publish and Flush
+name: Purge
 
 on:
   push:
@@ -6,34 +6,10 @@ on:
       - main
 
 jobs:
-  build:
+  purge:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build and publish
-      run: |
-        npm run build
-        git add .
-        git commit -m "Publishing new release"
-        git push
-        git fetch --tags
-        latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-        echo "Latest release version: $latestTag"
-        newTag=$(echo $latestTag | awk -F. -v OFS=. '{$NF++;print}')
-        git tag $newTag
-        git push origin $newTag
-
-    - name: Call jsDelivr flush URL
+    - name: Call jsDelivr purge URL
       run: curl -X POST https://purge.jsdelivr.net/gh/pixelsock/quoteApp@latest/dist/bundle.js
 
