@@ -35,5 +35,5 @@ jobs:
         git push origin $newTag
 
     - name: Call jsDelivr flush URL
-      run: curl -X POST https://purge.jsdelivr.net/gh/pixelsock/quoteApp@latest
+      run: curl -X POST https://purge.jsdelivr.net/gh/pixelsock/quoteApp@latest/dist/bundle.js
 
