@@ -1,6 +1,10 @@
 import jsonData from './data/output.json';
 import { generatePDF } from './generatePDF.js';
-// for testing purposes if a user clicks on an item with data-w-id="3c2f2722-e3c7-6f05-8576-623a08bbaedd" it will select the first item in every dropdown and add a quantity of 1
+
+
+
+  
+
 document.addEventListener('click', function(event) {
     if (event.target.getAttribute('data-w-id') === '3c2f2722-e3c7-6f05-8576-623a08bbaedd') {
         const formFields = fieldOrder;
@@ -18,7 +22,6 @@ document.addEventListener('click', function(event) {
     }
 }
 );
-alert('This is a test alerting!');
 
 let currentSelections = {
     'product-line': "",
@@ -121,7 +124,12 @@ const fields = {
 
 function populateFormFields(jsonData) {
     Object.entries(fields).forEach(([fieldId, jsonKey]) => {
+        console.log(`Attempting to retrieve element with ID: ${fieldId}`); // Debugging output
         const selectElement = document.getElementById(fieldId);
+        if (!selectElement) {
+            console.error(`Failed to retrieve select element for ID: ${fieldId}`); // Error output if element is not found
+            return; // Skip further processing for this field
+        }
         let options = jsonData.map(item => item[jsonKey]);
 
         // Flatten the array if the options are arrays and remove duplicates
@@ -146,7 +154,6 @@ function populateFormFields(jsonData) {
         populateSelectField(selectElement, options);
     });
 }
-
 // Define the order of fields
 const fieldOrder = Object.keys(fields);
 
@@ -382,7 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const popUpButton = document.getElementById('pop-up');
     // initially hide the popupbutton button
     popUpButton.style.display = 'none';
-
+    // add event listener to the pop-up button.
     
 
     // Show the "add-another" button when the quantity field is updated
@@ -403,19 +410,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     });
 
-   
-    
-    if (generateQuoteButton) {
-        generateQuoteButton.addEventListener('click', () => {
+    popUpButton.addEventListener('click', function() {
+        const latestQuoteNumber = Number(document.getElementById('latest-quote-number').innerHTML);
+            // get the latest quote number and increment it by 1. Add the incremented value to the quote number field
+            const quoteNumber = String(latestQuoteNumber + 1);
+            document.getElementById('quote-number-field').value = quoteNumber;
+
+            let bool = false;
+            const customerNumber = document.getElementById('customer-number').textContent;
             const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
             const finalTotal = getFinalTotal(); // This should return the final total as a number
-            const quoteNumber = new Date().getTime().toString().slice(-6); // Generate a unique 6-digit quote number based on timestamp
+    
             // Call the generatePDF function with the gathered data
-            generatePDF(quoteItems, finalTotal, quoteNumber);
+            generatePDF(bool, quoteItems, finalTotal, customerNumber, quoteNumber);
+            
+    });
+
+   
+
+    if (generateQuoteButton) {
+        const form = document.getElementById('wf-form-Price-Quote');
+        form.addEventListener('submit', () => {
+            
+    
+            let bool = true;
+            const customerNumber = document.getElementById('customer-number').textContent;
+            const quoteNumber = document.getElementById('quote-number-field').value;
+            const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
+            const finalTotal = getFinalTotal(); // This should return the final total as a number
+    
+            // Call the generatePDF function with the gathered data
+            generatePDF(bool, quoteItems, finalTotal, customerNumber, quoteNumber);
+    
+        
         });
     }
 });
-
 function addFilteredItemToQuote() {
     const description = generateProductDescription(currentSelections);
 
@@ -454,6 +484,9 @@ function addFilteredItemToQuote() {
         quantityElement.textContent = quantity;
         priceElement.textContent = `$${totalPrice}`;
         document.getElementById('line-item-container').appendChild(clone);
+        // Display the generated SKU and quantity in specified elements
+        document.getElementById('form-sku-label').textContent = sku;
+        document.getElementById('form-quantity-label').textContent = quantity;
         clearFormAndResetSelections();
     } else {
         console.error('One or more elements could not be found in the template.');
@@ -473,6 +506,8 @@ function clearFormAndResetSelections() {
             currentSelections[key] = "";
         }
     }
+
+    
 
     // Optionally, you could also reset any visual feedback or additional UI elements that are affected by the selections.
     // For example, hiding the 'generate-quote' button again or clearing any displayed error messages.

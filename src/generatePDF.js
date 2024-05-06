@@ -1,8 +1,10 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'; 
+import { uploadFileAndGetShareLink } from './data/dropbox'; // Corrected import path
+
 export { generatePDF };
 
-function generatePDF(quoteItems, finalTotal, quoteNumber, sku) {
+function generatePDF(bool, quoteItems, finalTotal, customerNumber, quoteNumber) {
     const pdf = new jsPDF({
         orientation: 'p',
         unit: 'pt',
@@ -34,7 +36,7 @@ function generatePDF(quoteItems, finalTotal, quoteNumber, sku) {
     const expiryDate = new Date(quoteDate);
     expiryDate.setDate(expiryDate.getDate() + 90);
     pdf.text(`Expiry Date: ${expiryDate.toLocaleDateString()}`, pdf.internal.pageSize.width - 40, 100, null, null, 'right'); // Adjust position as needed
-    pdf.text("Customer Number: 12345", pdf.internal.pageSize.width - 40, 120, null, null, 'right'); // Adjust position as needed
+    pdf.text(`Customer Number: ${customerNumber}`, pdf.internal.pageSize.width - 40, 120, null, null, 'right'); // Adjust position as needed
 
     // Add a line break (horizontal line)
     pdf.setDrawColor(0, 0, 0); // Set draw color to black
@@ -43,22 +45,26 @@ function generatePDF(quoteItems, finalTotal, quoteNumber, sku) {
     // Add the table header and items without FREIGHT
     autoTable(pdf, {
         startY: 150,
+        margin: { left: 40, right: 40 }, // Set left and right margins
+        tableWidth: pdf.internal.pageSize.width - 40, // Set the table width to match the line length
         styles: {
             fontSize: 10, // Default font size for the table
             cellPadding: 5,
         },
         columnStyles: {
             0: { cellWidth: 140 }, // ITEM NUMBER
-            1: { cellWidth: 180 }, // DESCRIPTION
-            2: { cellWidth: 40 }, // QTY
-            3: { cellWidth: 70 }, // BASE
-            4: { cellWidth: 70 }, // TOTAL COST
+            1: { cellWidth: 190 }, // DESCRIPTION
+            2: { cellWidth: 60, textAlign: 'center' }, // QTY
+            3: { cellWidth: 60}, // BASE
+            4: { cellWidth: 80, halign: 'right' }, // TOTAL COST
         },
         headStyles: {
             fillColor: [211, 211, 211], // A light gray background for the header
             textColor: [0, 0, 0], // Black text for the header
         },
-        head: [['ITEM NUMBER', 'DESCRIPTION', 'QTY', 'BASE', 'COST']],
+        head: [
+            ['ITEM NUMBER', 'DESCRIPTION', 'QTY', 'BASE', 'COST']
+        ],
         body: quoteItems.map(item => [
             item.product,
             item.description,
@@ -71,18 +77,52 @@ function generatePDF(quoteItems, finalTotal, quoteNumber, sku) {
             textColor: [255, 255, 255], // White text
             fontSize: 10, // Slightly larger text for the footer
             cellPadding: 10, // Increased height for the footer
+            textAlign: 'right', // Align text to the right
         },
         foot: [
             ['TOTALS','', '', '', `$${finalTotal.toFixed(2)}`]
-        ]
+        ],
+        didParseCell: function(data) {
+            // Check if this is a header cell and for the 'COST' column
+            if (data.row.section === 'head' && data.column.dataKey === 4) {
+                data.cell.styles.halign = 'right'; // Align this header cell to the right
+            }
+            // do the same for the footer total
+            if (data.row.section === 'foot' && data.column.dataKey === 4) {
+                data.cell.styles.halign = 'right'; // Align this header cell to the right
+            }
+        }
     });
-
     // Add footer notes - align to the left
     const notesY = pdf.internal.pageSize.height - 100; // Position from the bottom of the page
     pdf.setFontSize(8); // Smaller font for footer notes
     pdf.text("* This quote is valid for 3 months following its creation.", 40, notesY);
     // Add more notes here
 
-    // Save the PDF
-    window.open(pdf.output('bloburl'), '_blank');
+    // Convert the PDF to a blob
+    const pdfBlob = pdf.output('blob');
+
+    // Create a new File object from the blob
+    const pdfFile = new File([pdfBlob], `Matrix-${quoteNumber}.pdf`, { type: "application/pdf" });
+
+    if (bool) {
+        // Generate the pdf and download it
+        pdf.save(`Matrix-${quoteNumber}.pdf`);
+    } else {
+        // Upload the PDF to Dropbox and get the share link
+        uploadFileAndGetShareLink(pdfFile)
+            .then(function(shareLink) {
+                if (shareLink) {
+                    console.log('PDF uploaded to Dropbox and shared link:', shareLink);
+                    // add the value of shareLink to the value of input field with id 'quote-data'
+                    document.getElementById('quote-data').value = shareLink;
+                } else {
+                    console.error('Error uploading PDF to Dropbox');
+                }
+            })
+            .catch(function(error) {
+                console.error('Error uploading PDF to Dropbox:', error);
+            });
+    }
 }
+
