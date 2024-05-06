@@ -7,13 +7,13 @@ function updateQuoteNumber(callback) {
         headers: {
             'content-type': 'application/json',
             'x-rapidapi-host': 'cors-proxy1.p.rapidapi.com',
-            'x-rapidapi-key': '379a75a11dmsh147520ba9490037p197c63jsnf628c4555174'  // Replace with your actual RapidAPI key
+            'x-rapidapi-key': process.env.RAPIDAPI_KEY
         },
         data: {
             url: 'https://api.webflow.com/collections/6638674cd97c361d51e81b7e/items',
             method: 'GET',
             headers: {
-                'Authorization': `6a059da782e9c68e0e09c799124873569a0fb6240004234e4c2c35ee8149cae9`,  // Replace with your actual Webflow API token
+                'Authorization': process.env.WEBFLOW_API_TOKEN,
                 'accept-version': '1.0.0'
             }
         }
