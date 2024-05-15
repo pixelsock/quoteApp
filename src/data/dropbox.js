@@ -1,10 +1,13 @@
 import fetch from 'node-fetch';
+// env
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Assuming you have these stored securely and can retrieve them
-let accessToken = 'sl.B02O6z7KBCXaVp-DMvcKpRP32Uv8yC9i5gHTMrWDaz0AsFEMN79IZJkT9Lgwa9-Z-7SIZofxgokLVk46-kej7sGuLPk04l9BPuiPPQXHezwTElHF84Ph55obFin6lQRYGfhwm9_XGuWG2G1JeLtp-zE';
-const refreshToken = '7Hj2peBHnUoAAAAAAAAAAR8EEHRGSFb1DQ4UNNf1IdpicYdt_pNE-YNLmgfLBbgU';
-const clientId = 'fqpoksb8sfws71p';
-const clientSecret = 'ne3yd3q9bn3cvco';
+const dropboxToken = process.env.DROPBOX_ACCESS_TOKEN;
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const refreshToken = process.env.REFRESH_TOKEN;
 
 
 const dropboxApiDomain = 'https://api.dropboxapi.com';
@@ -29,7 +32,7 @@ async function refreshAccessToken() {
   }
 
   const data = await response.json();
-  accessToken = data.access_token; // Update the access token
+  dropboxToken = data.access_token; // Update the access token
 }
 
 async function uploadFileAndGetShareLink(file) {
@@ -41,7 +44,7 @@ async function uploadFileAndGetShareLink(file) {
     await refreshAccessToken();
 
     const uploadHeaders = {
-      "Authorization": `Bearer ${accessToken}`,
+      "Authorization": `Bearer ${dropboxToken}`,
       "Content-Type": "application/octet-stream",
       "Dropbox-API-Arg": JSON.stringify({
         "path": `/Matrix Mirrors/RFQs/${file.name}`,
@@ -65,7 +68,7 @@ async function uploadFileAndGetShareLink(file) {
     const uploadData = await uploadResponse.json();
 
     const shareHeaders = {
-      "Authorization": `Bearer ${accessToken}`,
+      "Authorization": `Bearer ${dropboxToken}`,
       "Content-Type": "application/json"
     };
 
