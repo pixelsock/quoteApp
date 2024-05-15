@@ -1,13 +1,14 @@
 {
     "name": "quoteapp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "json.js",
     "scripts": {
         "build": "rimraf dist/* && webpack --mode production",
         "watch": "webpack --watch --mode development",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "webpack serve --mode development --hot"
+        "start": "webpack serve --mode development --hot",
+        "release": "standard-version"
     },
     "keywords": [],
     "author": "",
@@ -16,6 +17,7 @@
         "browser-sync": "^2.29.3",
         "browser-sync-webpack-plugin": "^2.3.0",
         "file-loader": "^6.2.0",
+        "standard-version": "^9.5.0",
         "url-loader": "^4.1.1",
         "webpack": "^5.90.3",
         "webpack-cli": "^5.1.4",
