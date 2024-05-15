@@ -1,6 +1,6 @@
 {
     "name": "quoteapp",
-    "version": "2.0.8",
+    "version": "2.0.9",
     "description": "",
     "main": "json.js",
     "scripts": {
@@ -24,13 +24,18 @@
         "webpack-dev-server": "^5.0.2"
     },
     "dependencies": {
+        "buffer": "^6.0.3",
         "crypto-browserify": "^3.12.0",
         "dotenv": "^16.4.5",
         "dropbox": "^10.34.0",
         "html2canvas": "^1.4.1",
         "jspdf": "^2.5.1",
         "jspdf-autotable": "^3.8.2",
-        "util": "^0.12.5"
+        "os-browserify": "^0.3.0",
+        "path-browserify": "^1.0.1",
+        "stream-browserify": "^3.0.0",
+        "util": "^0.12.5",
+        "vm-browserify": "^1.1.2"
     },
     "resolve": {
         "fallback": {
