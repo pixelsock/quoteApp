@@ -1,10 +1,6 @@
 import jsonData from './data/output.json';
 import { generatePDF } from './generatePDF.js';
-
-
-
   
-
 document.addEventListener('click', function(event) {
     if (event.target.getAttribute('data-w-id') === '3c2f2722-e3c7-6f05-8576-623a08bbaedd') {
         const formFields = fieldOrder;
@@ -394,6 +390,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Show the "add-another" button when the quantity field is updated
     document.getElementById('quantity').addEventListener('change', function() {
+        updateTotals(); // Update the totals when the quantity changes
         if (this.value) {
             addAnotherButton.style.display = ''; // Show the button
             
@@ -408,44 +405,115 @@ document.addEventListener('DOMContentLoaded', async () => {
         addFilteredItemToQuote();
         popUpButton.style.display = ''; // Show the "generate-quote" button after adding an item
     
+    }); 
+
+    const lastButton = document.getElementById('last-step-button');
+    let dropboxLink
+
+    lastButton.addEventListener('click', function() {
+        const latestQuoteNumberElement = document.getElementById('latest-quote-number');
+        if (!latestQuoteNumberElement) {
+            console.error('Latest quote number element not found');
+            return; // Exit the function if the element is not found
+        }
+        const latestQuoteNumber = Number(latestQuoteNumberElement.textContent);
+
+        const quoteNumber = String(latestQuoteNumber + 1);
+        const quoteNumberField = document.getElementById('quote-number-field');
+        if (!quoteNumberField) {
+            console.error('Quote number field not found');
+            return; // Exit the function if the element is not found
+        }
+        quoteNumberField.value = quoteNumber;
+
+        const projectNameElement = document.getElementById('Project-Name');
+        if (!projectNameElement) {
+            console.error('Project name element not found');
+            return; // Exit the function if the element is not found
+        }
+        const projectName = projectNameElement.value;
+
+        const specifierInfoElement = document.getElementById('Specifier-Location');
+        if (!specifierInfoElement) {
+            console.error('Specifier info element not found');
+            return; // Exit the function if the element is not found
+        }
+        const specifierInfo = specifierInfoElement.value;
+
+        const companyNameElement = document.getElementById('company-field');
+        if (!companyNameElement) {
+            console.error('Company name element not found');
+            return; // Exit the function if the element is not found
+        }
+        const companyName = companyNameElement.value;
+
+        
+
+        const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
+        const finalTotal = getFinalTotal(); // This should return the final total as a number
+
+        // finalTotal to field in the form
+        const finalTotalField = document.getElementById('total-field');
+        if (finalTotalField) {
+            finalTotalField.value = finalTotal;
+        }
+
+        // quantity to field in the form
+        const quantityField = document.getElementById('quantity-field');
+        if (quantityField) {
+            quantityField.value = document.getElementById('qs-quantity-total').textContent;
+        }
+
+        const loadButton = document.getElementById('loading-button');
+        const generateQuoteButton = document.getElementById('generate-quote');
+
+        const shareLinkField = document.getElementById('quote-data');
+
+       
+
+        // Call the generatePDF function with the gathered data
+        generatePDF(false, quoteItems, finalTotal, companyName, quoteNumber, projectName, specifierInfo, (error, shareLink) => {
+            if (error) {
+                console.error('Failed to generate PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            } else {
+                if (shareLink) {
+                    // Callback function to execute after generating the PDF
+                    loadButton.classList.add('hide'); // Show the "load" button
+                    generateQuoteButton.classList.remove('hide'); // Hide the "generate-quote" 
+                    if (shareLinkField) {
+                        shareLinkField.value = shareLink; // Update the Dropbox link field
+                        // dropboxLink = shareLink but change the last 0 to 1
+                        dropboxLink = shareLink.slice(0, -1) + '1';
+                    }
+                }
+            }
+        
+
+        });
     });
-
-    popUpButton.addEventListener('click', function() {
-        const latestQuoteNumber = Number(document.getElementById('latest-quote-number').innerHTML);
-            // get the latest quote number and increment it by 1. Add the incremented value to the quote number field
-            const quoteNumber = String(latestQuoteNumber + 1);
-            document.getElementById('quote-number-field').value = quoteNumber;
-
-            let bool = false;
-            const customerNumber = document.getElementById('customer-number').textContent;
-            const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
-            const finalTotal = getFinalTotal(); // This should return the final total as a number
-    
-            // Call the generatePDF function with the gathered data
-            generatePDF(bool, quoteItems, finalTotal, customerNumber, quoteNumber);
-            
-    });
-
-   
 
     if (generateQuoteButton) {
-        const form = document.getElementById('wf-form-Price-Quote');
-        form.addEventListener('submit', () => {
-            
-    
-            let bool = true;
-            const customerNumber = document.getElementById('customer-number').textContent;
+        generateQuoteButton.addEventListener('click', () => {
+           
+            const companyName = document.getElementById('company-field').value;
             const quoteNumber = document.getElementById('quote-number-field').value;
             const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
             const finalTotal = getFinalTotal(); // This should return the final total as a number
-    
-            // Call the generatePDF function with the gathered data
-            generatePDF(bool, quoteItems, finalTotal, customerNumber, quoteNumber);
-    
-        
+            const projectName = document.getElementById('Project-Name').value;
+            const specifierInfo = document.getElementById('Specifier-Location').value;
+            
+            generatePDF(true, quoteItems, finalTotal, companyName, quoteNumber, projectName, specifierInfo)
+    .then(() => {
+        console.log('PDF generated and saved successfully.');
+    })
+    .catch(error => {
+        console.error('Failed to generate PDF:', error);
+    });
         });
     }
 });
+
 function addFilteredItemToQuote() {
     const description = generateProductDescription(currentSelections);
 
@@ -547,6 +615,21 @@ function updateTotals() {
     if (quantityTotalElement) {
         quantityTotalElement.textContent = totalQuantity.toString();
     }
+
+    // Check if the total price exceeds 25 and handle accordingly
+    const popUpButton = document.getElementById('pop-up');
+    const moreThan25 = document.getElementById('more-than-25');
+    if (totalQuantity > 25) {
+            moreThan25.classList.remove('hide'); // Show the warning message
+            popUpButton.classList.add('hide');
+            
+        
+    } else {
+        
+            moreThan25.classList.add('hide');
+            popUpButton.classList.remove('hide');
+        
+    }
 }
 
 // Example implementations of the functions to gather data (you'll need to adjust these based on your actual data structure)
@@ -567,4 +650,3 @@ function getFinalTotal() {
     // Example: Fetching final total from the DOM
     return parseFloat(document.querySelector('[qs-value="total"]').textContent.replace('$', ''));
 }
-

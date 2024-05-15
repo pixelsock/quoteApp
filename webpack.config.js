@@ -31,6 +31,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.IgnorePlugin({ resourceRegExp: /^\.\/working_files\// }),
     new webpack.HotModuleReplacementPlugin(),
   ],
   // Add your other webpack configurations here
