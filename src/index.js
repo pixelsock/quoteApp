@@ -1,6 +1,11 @@
 import jsonData from './data/output.json';
 import { generatePDF } from './generatePDF.js';
-  
+// Expose your functions or objects globally if needed
+window.MyApp = {
+  generatePDF: generatePDF,
+  jsonData: jsonData,
+};
+
 document.addEventListener('click', function(event) {
     if (event.target.getAttribute('data-w-id') === '3c2f2722-e3c7-6f05-8576-623a08bbaedd') {
         const formFields = fieldOrder;
@@ -120,10 +125,8 @@ const fields = {
 
 function populateFormFields(jsonData) {
     Object.entries(fields).forEach(([fieldId, jsonKey]) => {
-        console.log(`Attempting to retrieve element with ID: ${fieldId}`); // Debugging output
         const selectElement = document.getElementById(fieldId);
         if (!selectElement) {
-            console.error(`Failed to retrieve select element for ID: ${fieldId}`); // Error output if element is not found
             return; // Skip further processing for this field
         }
         let options = jsonData.map(item => item[jsonKey]);
@@ -152,8 +155,6 @@ function populateFormFields(jsonData) {
 }
 // Define the order of fields
 const fieldOrder = Object.keys(fields);
-
-console.log('Field order:', fieldOrder);
 
 let lastUserInteractedFieldId = null;
 
@@ -240,8 +241,6 @@ function updateFieldVisibility() {
     if (quantityWrapper) {
         quantityWrapper.style.display = allFieldsHidden ? '' : 'none';
         if (allFieldsHidden) {
-            console.log("All fields before 'quantity' are hidden. Current selections:", currentSelections);
-            console.log('Generated SKU:', generateSKU(currentSelections));
         }
     }
 
@@ -287,7 +286,6 @@ function setupDynamicFiltering(jsonData) {
                     });
                 }
             });
-            console.log(`Filtered data after selecting ${fieldId}:`, filteredData);
 
             updateFormFields(filteredData, formFields, fieldId);
 
@@ -320,10 +318,6 @@ function updateFormFields(filteredData, formFields, currentFieldId) {
 
         // Deduplicate options
         options = [...new Set(options)];
-        // console log frame color options
-        if (fieldId === 'frame-color') {
-            console.log('Frame color options:', options.length, options);
-        }
         // Check if all options are "N/A" after deduplication
         if (options.length === 1) {
             // wait for the select element to be available
@@ -353,7 +347,6 @@ function handleRemoveItemClick(event) {
     // Assuming each item is contained in a parent element, like a div or li
     const itemElement = event.target.closest('.qs-line-item-row');
     if (itemElement) {
-        console.log('Removing item:', itemElement);
         itemElement.remove(); // Remove the item from the DOM
         updateTotals(); // Update the totals after removing the item
     }
@@ -413,7 +406,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     lastButton.addEventListener('click', function() {
         const latestQuoteNumberElement = document.getElementById('latest-quote-number');
         if (!latestQuoteNumberElement) {
-            console.error('Latest quote number element not found');
             return; // Exit the function if the element is not found
         }
         const latestQuoteNumber = Number(latestQuoteNumberElement.textContent);
@@ -421,28 +413,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         const quoteNumber = String(latestQuoteNumber + 1);
         const quoteNumberField = document.getElementById('quote-number-field');
         if (!quoteNumberField) {
-            console.error('Quote number field not found');
             return; // Exit the function if the element is not found
         }
         quoteNumberField.value = quoteNumber;
 
         const projectNameElement = document.getElementById('Project-Name');
         if (!projectNameElement) {
-            console.error('Project name element not found');
             return; // Exit the function if the element is not found
         }
         const projectName = projectNameElement.value;
 
         const specifierInfoElement = document.getElementById('Specifier-Location');
         if (!specifierInfoElement) {
-            console.error('Specifier info element not found');
             return; // Exit the function if the element is not found
         }
         const specifierInfo = specifierInfoElement.value;
 
         const companyNameElement = document.getElementById('company-field');
         if (!companyNameElement) {
-            console.error('Company name element not found');
             return; // Exit the function if the element is not found
         }
         const companyName = companyNameElement.value;
@@ -474,7 +462,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Call the generatePDF function with the gathered data
         generatePDF(false, quoteItems, finalTotal, companyName, quoteNumber, projectName, specifierInfo, (error, shareLink) => {
             if (error) {
-                console.error('Failed to generate PDF:', error);
                 alert('Error generating PDF. Please try again.');
             } else {
                 if (shareLink) {
@@ -508,7 +495,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('PDF generated and saved successfully.');
     })
     .catch(error => {
-        console.error('Failed to generate PDF:', error);
     });
         });
     }
@@ -529,13 +515,11 @@ function addFilteredItemToQuote() {
     const totalPrice = (basePrice * quantity).toFixed(2);
 
     if (!sku) {
-        console.error('No item selected or SKU details are missing.');
         return;
     }
 
     const template = document.getElementById('qs-line-item-template');
     if (!template) {
-        console.error('Template element not found.');
         return;
     }
 
@@ -557,7 +541,6 @@ function addFilteredItemToQuote() {
         document.getElementById('form-quantity-label').textContent = quantity;
         clearFormAndResetSelections();
     } else {
-        console.error('One or more elements could not be found in the template.');
     }
 
     updateTotals();

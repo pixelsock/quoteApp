@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable'; 
-import { uploadFileAndGetShareLink } from './data/dropbox'; // Corrected import path
+import autoTable from 'jspdf-autotable';
+import { uploadFileAndGetShareLink } from './dropbox';
 
 export { generatePDF };
 
