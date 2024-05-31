@@ -74,6 +74,8 @@ function generateSKU(currentSelections) {
     return sku;
 }
 
+alert("hello")
+
 function generateProductDescription(currentSelections) {
     const productLine = currentSelections['product-line'].trim();
     const mirrorStyle = currentSelections['mirror-style'].replace(/\([^)]*\)/g, '').trim();
@@ -286,6 +288,14 @@ function setupDynamicFiltering(jsonData) {
                     });
                 }
             });
+
+            // Special rules for Touch Sensor and Adjustable Color Temperature
+            if (currentSelections['mirror-controls'] === 'Touch Sensor' && currentSelections['color-temperature'] === 'Adjustable 2700k-6500k (00)') {
+                currentSelections['dimming'] = 'Non-Dimming (N)';
+                document.getElementById('dimming').value = 'Non-Dimming (N)';
+                currentSelections['light-output'] = 'High Output - 6W/ft | 750lm/ft (H)';
+                document.getElementById('light-output').value = 'High Output - 6W/ft | 750lm/ft (H)';
+            }
 
             updateFormFields(filteredData, formFields, fieldId);
 
