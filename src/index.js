@@ -74,8 +74,6 @@ function generateSKU(currentSelections) {
     return sku;
 }
 
-alert("hello")
-
 function generateProductDescription(currentSelections) {
     const productLine = currentSelections['product-line'].trim();
     const mirrorStyle = currentSelections['mirror-style'].replace(/\([^)]*\)/g, '').trim();
