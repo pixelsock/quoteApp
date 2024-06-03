@@ -53,7 +53,7 @@ function generateSKU(currentSelections) {
 
         // Special handling for 'size' to format as "nnnn"
         if (field === 'size' && value) {
-            value = value.replace(/"/g, '').replace('x', '').replace('Diameter', '');
+            value = value.replace(/"/g, '').replace('x', '').replace(' Diameter', '').s;
             value = value.padStart(4, '0'); // Pad with zeros to ensure it is four digits
         }
         // Extract SKU code from the description
