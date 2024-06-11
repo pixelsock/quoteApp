@@ -625,6 +625,8 @@ function updateTotals() {
     }
 }
 
+alert('Hello World');
+
 // Example implementations of the functions to gather data (you'll need to adjust these based on your actual data structure)
 function getQuoteItems() {
     // Example: Fetching quote items from the DOM or state
