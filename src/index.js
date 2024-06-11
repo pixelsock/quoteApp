@@ -39,6 +39,7 @@ let currentSelections = {
 
 };
 
+
 let jsondata = jsonData;
 
 function generateSKU(currentSelections) {
