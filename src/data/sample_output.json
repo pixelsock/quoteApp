@@ -1,0 +1,338 @@
+[
+  {
+    "Product Line": "Deco (Thin Frame)",
+    "Mirror Style": "Single Short Side Edge (T10)",
+    "Light Direction": "Indirect (I)",
+    "Size": "24\"x48\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)",
+      "Adjustable 2700k-6500k (00)"
+    ],
+    "Mirror Controls": "Touch Sensor",
+    "Accessories": "Anti-Fog (AT)",
+    "Frame Color": [
+      "Black Frame (BF)",
+      "Gold Frame (GF)",
+      "Silver Frame (SF)"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)"
+    ],
+    "Base Distributor Price": "$879.99",
+    "Total Price": "$997.96",
+    "SKU": "T10-I-2448-output-colorTemp-dimming-mountingOrientation-AT-frameColor"
+  },
+  {
+    "Product Line": "Deco (Wide Frame)",
+    "Mirror Style": "No Frost (W05)",
+    "Light Direction": "Indirect (I)",
+    "Size": "30\"x48\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)"
+    ],
+    "Mirror Controls": "Wall Switch Only",
+    "Accessories": "Night Light & Anti-Fog (AN)",
+    "Frame Color": [
+      "Black Frame (BF)",
+      "Gold Frame (GF)",
+      "Silver Frame (SF)"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)",
+      "ELV Dimmable (E)",
+      "0-10V Dimmable (V)"
+    ],
+    "Base Distributor Price": "$857.13",
+    "Total Price": "$969.11",
+    "SKU": "W05-I-3048-output-colorTemp-dimming-mountingOrientation-AN-frameColor"
+  },
+  {
+    "Product Line": "Classic",
+    "Mirror Style": "Single Short Side Inset (L11)",
+    "Light Direction": "Direct (D)",
+    "Size": "42\"x60\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)",
+      "Adjustable 2700k-6500k (00)"
+    ],
+    "Mirror Controls": "Touch Sensor",
+    "Accessories": "Night Light & Anti-Fog (AL)",
+    "Frame Color": [
+      "N/A"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)"
+    ],
+    "Base Distributor Price": "$1,004.99",
+    "Total Price": "$1234.95",
+    "SKU": "L11-D-4260-output-colorTemp-dimming-mountingOrientation-AL-frameColor"
+  },
+  {
+    "Product Line": "Deco (Wide Frame)",
+    "Mirror Style": "Single Long Side Inset (W09)",
+    "Light Direction": "Both Direct and Indirect (B)",
+    "Size": "42\"x84\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)",
+      "Adjustable 2700k-6500k (00)"
+    ],
+    "Mirror Controls": "Touch Sensor",
+    "Accessories": "No Additional Accessories (TS)",
+    "Frame Color": [
+      "Black Frame (BF)",
+      "Gold Frame (GF)",
+      "Silver Frame (SF)"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)"
+    ],
+    "Base Distributor Price": "$2,721.32",
+    "Total Price": "$2871.30",
+    "SKU": "W09-B-4284-output-colorTemp-dimming-mountingOrientation-TS-frameColor"
+  },
+  {
+    "Product Line": "Classic",
+    "Mirror Style": "Single Short Side Inset (L11)",
+    "Light Direction": "Direct (D)",
+    "Size": "30\"x72\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)",
+      "Adjustable 2700k-6500k (00)"
+    ],
+    "Mirror Controls": "Touch Sensor",
+    "Accessories": "Anti-Fog (AT)",
+    "Frame Color": [
+      "N/A"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)"
+    ],
+    "Base Distributor Price": "$879.99",
+    "Total Price": "$1029.96",
+    "SKU": "L11-D-3072-output-colorTemp-dimming-mountingOrientation-AT-frameColor"
+  },
+  {
+    "Product Line": "Deco (Wide Frame)",
+    "Mirror Style": "Double Long Side Edge (W04)",
+    "Light Direction": "Direct (D)",
+    "Size": "36\"x60\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)"
+    ],
+    "Mirror Controls": "Wall Switch Only",
+    "Accessories": "Night Light (NL)",
+    "Frame Color": [
+      "Black Frame (BF)",
+      "Gold Frame (GF)",
+      "Silver Frame (SF)"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)",
+      "ELV Dimmable (E)",
+      "0-10V Dimmable (V)"
+    ],
+    "Base Distributor Price": "$1,174.99",
+    "Total Price": "$1254.98",
+    "SKU": "W04-D-3660-output-colorTemp-dimming-mountingOrientation-NL-frameColor"
+  },
+  {
+    "Product Line": "Future",
+    "Mirror Style": "Single Short Side Inset (F11)",
+    "Light Direction": "Direct (D)",
+    "Size": "36\"x60\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)",
+      "Adjustable 2700k-6500k (00)"
+    ],
+    "Mirror Controls": "Touch Sensor",
+    "Accessories": "Night Light (NT)",
+    "Frame Color": [
+      "N/A"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)"
+    ],
+    "Base Distributor Price": "$994.99",
+    "Total Price": "$1160.96",
+    "SKU": "F11-D-3660-output-colorTemp-dimming-mountingOrientation-NT-frameColor"
+  },
+  {
+    "Product Line": "Classic",
+    "Mirror Style": "Double Long Side Edge (L04)",
+    "Light Direction": "Indirect (I)",
+    "Size": "30\"x42\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)",
+      "Adjustable 2700k-6500k (00)"
+    ],
+    "Mirror Controls": "Touch Sensor",
+    "Accessories": "No Additional Accessories (TS)",
+    "Frame Color": [
+      "N/A"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)"
+    ],
+    "Base Distributor Price": "$599.99",
+    "Total Price": "$685.97",
+    "SKU": "L04-I-3042-output-colorTemp-dimming-mountingOrientation-TS-frameColor"
+  },
+  {
+    "Product Line": "Deco (Thin Frame)",
+    "Mirror Style": "Double Long Side Inset (T03)",
+    "Light Direction": "Direct (D)",
+    "Size": "24\"x36\"",
+    "Color Temperature": [
+      "Warm 2700k (27)",
+      "Warm 3000k (30)",
+      "Mid-Warm 3500k (35)",
+      "Mid-Warm 4000k (40)",
+      "Cool 5000k (50)",
+      "Adjustable 2700k-6500k (00)"
+    ],
+    "Mirror Controls": "Touch Sensor",
+    "Accessories": "Anti-Fog (AT)",
+    "Frame Color": [
+      "Black Frame (BF)",
+      "Gold Frame (GF)",
+      "Silver Frame (SF)"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "Standard - 4.5W/ft | 550lm/ft (S)",
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)"
+    ],
+    "Base Distributor Price": "$679.99",
+    "Total Price": "$797.96",
+    "SKU": "T03-D-2436-output-colorTemp-dimming-mountingOrientation-AT-frameColor"
+  },
+  {
+    "Product Line": "Future",
+    "Mirror Style": "Single Long Side Inset (F09)",
+    "Light Direction": "Direct (D)",
+    "Size": "42\"x84\"",
+    "Color Temperature": [
+      "Adjustable 2700k-6500k (00)"
+    ],
+    "Mirror Controls": "Matrix Touch System",
+    "Accessories": "Night Light (TL)",
+    "Frame Color": [
+      "N/A"
+    ],
+    "Mounting Orientation": [
+      "Vertical (1)",
+      "Horizontal (2)"
+    ],
+    "Light Output": [
+      "High Output - 6W/ft | 750lm/ft (H)"
+    ],
+    "Dimming": [
+      "Non-Dimming (N)"
+    ],
+    "Base Distributor Price": "$2,133.32",
+    "Total Price": "$2363.28",
+    "SKU": "F09-D-4284-output-colorTemp-dimming-mountingOrientation-TL-frameColor"
+  }
+]

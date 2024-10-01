@@ -1,0 +1,16 @@
+[
+  {
+    "productLine": "Sample Product Line",
+    "frameColor": "Black",
+    "mirrorControls": "Touch",
+    "mirrorStyle": "Round",
+    "lightDirection": "Front",
+    "size": "24x36",
+    "mountingOrientation": "Vertical",
+    "colorTemperature": "3000K",
+    "lightOutput": "High",
+    "dimming": "Yes",
+    "accessories": "None",
+    "Total Price": "$500"
+  }
+]

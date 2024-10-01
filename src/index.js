@@ -269,7 +269,7 @@ function setupDynamicFiltering(jsonData) {
 
     formFields.forEach(fieldId => {
         document.getElementById(fieldId).addEventListener('change', () => {
-           filteredData = jsonData;
+            filteredData = jsonData;
             // Update currentSelections based on the current state of all form fields
             formFields.forEach(fid => {
                 const selectedValue = document.getElementById(fid).value;
@@ -296,6 +296,10 @@ function setupDynamicFiltering(jsonData) {
                 document.getElementById('dimming').value = 'Non-Dimming (N)';
                 currentSelections['light-output'] = 'High Output - 6W/ft | 750lm/ft (H)';
                 document.getElementById('light-output').value = 'High Output - 6W/ft | 750lm/ft (H)';
+            } else if (currentSelections['mirror-controls'] === 'Touch Sensor') {
+                // For Touch Sensor with other color temperatures, only restrict dimming
+                currentSelections['dimming'] = 'Non-Dimming (N)';
+                document.getElementById('dimming').value = 'Non-Dimming (N)';
             }
 
             updateFormFields(filteredData, formFields, fieldId);
@@ -308,7 +312,6 @@ function setupDynamicFiltering(jsonData) {
     // Initially update field visibility based on default selections
     updateFieldVisibility();
 }
-
 function updateFormFields(filteredData, formFields, currentFieldId) {
     formFields.forEach(fieldId => {
         const selectElement = document.getElementById(fieldId);
