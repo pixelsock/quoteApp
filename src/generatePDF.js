@@ -23,13 +23,11 @@ function generatePDF(bool, quoteItems, finalTotal, companyName, quoteNumber, pro
         // Add the quote number and project name under the logo
         pdf.setFontSize(12); // Adjust size as needed
         const quoteNumberY = 100; // Y position under the logo, adjust as needed
-        pdf.text(`Quote Number: ${quoteNumber}`, 40, quoteNumberY);
-        pdf.text(`Project: ${projectName}`, 40, quoteNumberY + 15); // Adjust Y position as needed
+        pdf.text(`Quote Number: ${quoteNumber}\nProject: ${projectName}\nSpecifier & Location: ${specifierInfo}`, 40, quoteNumberY);
 
         // Add the company info - align to the left
         pdf.setFontSize(10); // Adjust size as needed
-        pdf.text("Matrix Mirrors\n6464 Warren Drive\nNorcross, GA\n30093 USA", 180, 40); // Adjust position as needed
-        pdf.text(`Specifier & Location: ${specifierInfo}`, 180, 70); // Adjust Y position as needed
+        pdf.text("Matrix Mirrors\n6464 Warren Drive\nNorcross, GA 30093", 180, 40); // 
 
         // Add the title, quote number, date, expiry date, and company - align to the right
         pdf.setFontSize(16);
