@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "version": "3.8.1",
+  "version": "4.0.1",
   "description": "Quote App",
   "main": "index.js",
   "scripts": {
