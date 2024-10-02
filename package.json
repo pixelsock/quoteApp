@@ -1,11 +1,12 @@
 {
   "name": "app",
-  "version": "1.0.0",
-  "description": "",
+  "version": "3.8.1",
+  "description": "Quote App",
   "main": "index.js",
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c -w",
+    "release": "git add . && git commit -m \"Release v$(node -p \"require('./package.json').version\")\" && git push && git push --tags && gh release create v$(node -p \"require('./package.json').version\") --generate-notes"
   },
   "keywords": [],
   "author": "",
