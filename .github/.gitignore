@@ -4,6 +4,9 @@ node_modules/*
 # Environment variables
 .env*
 
+# scripts folder
+scripts/*
+
 # Logs
 logs/
 *.log
