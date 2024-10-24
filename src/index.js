@@ -6,8 +6,6 @@ window.MyApp = {
   jsonData: jsonData, 
 };
 
-
-
 document.addEventListener('click', function(event) {
     if (event.target.getAttribute('data-w-id') === '3c2f2722-e3c7-6f05-8576-623a08bbaedd') {
         const formFields = fieldOrder;
