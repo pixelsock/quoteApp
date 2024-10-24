@@ -5,7 +5,7 @@ node_modules/*
 .env*
 
 # scripts folder
-scripts/*
+scripts/
 
 # Logs
 logs/
