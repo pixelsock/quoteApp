@@ -3,8 +3,9 @@ import { generatePDF } from './generatePDF.js';
 // Expose your functions or objects globally if needed
 window.MyApp = {
   generatePDF: generatePDF,
-  jsonData: jsonData,
+  jsonData: jsonData, 
 };
+
  
 
 document.addEventListener('click', function(event) {
