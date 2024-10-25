@@ -44,13 +44,9 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "browserify": "^17.0.0",
+    "axios": "^1.6.7",
     "buffer": "^6.0.3",
     "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.8.2",
-    "os-browserify": "^0.3.0",
-    "path-browserify": "^1.0.1",
-    "process": "^0.11.10",
-    "vm-browserify": "^1.1.2"
+    "jspdf-autotable": "^3.8.2"
   }
 }
