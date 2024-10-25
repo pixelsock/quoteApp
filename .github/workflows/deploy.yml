@@ -27,6 +27,13 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
         
+      - name: Create .env file
+        run: |
+          echo "DROPBOX_ACCESS_TOKEN=${{ secrets.DROPBOX_ACCESS_TOKEN }}" >> .env
+          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
+          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
+          echo "REFRESH_TOKEN=${{ secrets.REFRESH_TOKEN }}" >> .env
+        
       - name: Build
         run: npm run build
         env:
