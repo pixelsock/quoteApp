@@ -44,7 +44,9 @@ export default {
     commonjs({
       include: 'node_modules/**',
     }),
-    json(),
+    json({
+      exclude: ['src/data/output.json']
+    }),
     babel({ babelHelpers: 'bundled', exclude: 'node_modules/**' }),
     builtins(),
     globals(),
