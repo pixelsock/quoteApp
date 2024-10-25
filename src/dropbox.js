@@ -12,22 +12,29 @@ const refreshToken = process.env.REFRESH_TOKEN;
 const dropboxApiDomain = 'https://api.dropboxapi.com';
 const dropboxContentDomain = 'https://content.dropboxapi.com';
 
-console.log('Client ID:', clientId);
-console.log('Client Secret:', clientSecret ? '[REDACTED]' : 'Not set');
-console.log('Refresh Token:', refreshToken ? '[REDACTED]' : 'Not set');
+console.log('Environment variables:');
+console.log('DROPBOX_ACCESS_TOKEN:', process.env.DROPBOX_ACCESS_TOKEN ? '[SET]' : '[NOT SET]');
+console.log('CLIENT_ID:', process.env.CLIENT_ID || '[NOT SET]');
+console.log('CLIENT_SECRET:', process.env.CLIENT_SECRET ? '[SET]' : '[NOT SET]');
+console.log('REFRESH_TOKEN:', process.env.REFRESH_TOKEN ? '[SET]' : '[NOT SET]');
 
 async function refreshAccessToken() {
     const url = `${dropboxApiDomain}/oauth2/token`;
     const body = new URLSearchParams({
         grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-        client_id: clientId,
-        client_secret: clientSecret
+        refresh_token: refreshToken ? '[SET]' : '[NOT SET]',
+        client_id: clientId || '[NOT SET]',
+        client_secret: clientSecret ? '[SET]' : '[NOT SET]'
     });
 
     console.log('Refreshing access token...');
     console.log('URL:', url);
-    console.log('Body:', body.toString());
+    console.log('Body:', {
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken ? '[SET]' : '[NOT SET]',
+        client_id: clientId || '[NOT SET]',
+        client_secret: clientSecret ? '[SET]' : '[NOT SET]'
+    });
 
     const response = await fetch(url, {
         method: 'POST',
