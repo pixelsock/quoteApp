@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -6,44 +6,26 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Use Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Test Environment Variables
-        run: npm run test-env
-        env:
-          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
-        
-      - name: Create .env file
-        run: |
-          echo "DROPBOX_ACCESS_TOKEN=${{ secrets.DROPBOX_ACCESS_TOKEN }}" >> .env
-          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
-          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
-          echo "REFRESH_TOKEN=${{ secrets.REFRESH_TOKEN }}" >> .env
-        
-      - name: Build
-        run: npm run build
-        env:
-          DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
-          
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
