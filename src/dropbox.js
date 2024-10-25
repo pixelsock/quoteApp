@@ -12,6 +12,10 @@ const refreshToken = process.env.REFRESH_TOKEN;
 const dropboxApiDomain = 'https://api.dropboxapi.com';
 const dropboxContentDomain = 'https://content.dropboxapi.com';
 
+console.log('Client ID:', clientId);
+console.log('Client Secret:', clientSecret ? '[REDACTED]' : 'Not set');
+console.log('Refresh Token:', refreshToken ? '[REDACTED]' : 'Not set');
+
 async function refreshAccessToken() {
     const url = `${dropboxApiDomain}/oauth2/token`;
     const body = new URLSearchParams({
@@ -21,19 +25,26 @@ async function refreshAccessToken() {
         client_secret: clientSecret
     });
 
+    console.log('Refreshing access token...');
+    console.log('URL:', url);
+    console.log('Body:', body.toString());
+
     const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body
     });
 
-    const data = await response.json(); // Get response data for more detailed error info
+    const data = await response.json();
+    console.log('Response:', data);
+
     if (!response.ok) {
         console.error('Failed to refresh access token:', data);
         throw new Error('Failed to refresh access token.');
     }
 
     dropboxToken = data.access_token;
+    console.log('Access token refreshed successfully');
 }
 
 async function uploadFileAndGetShareLink(file) {

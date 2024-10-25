@@ -49,11 +49,11 @@ export default {
     builtins(),
     globals(),
     replace({
-      'process.env.DROPBOX_ACCESS_TOKEN': JSON.stringify(process.env.DROPBOX_ACCESS_TOKEN),
-      'process.env.CLIENT_ID': JSON.stringify(process.env.CLIENT_ID),
-      'process.env.CLIENT_SECRET': JSON.stringify(process.env.CLIENT_SECRET),
-      'process.env.REFRESH_TOKEN': JSON.stringify(process.env.REFRESH_TOKEN),
-      preventAssignment: true
+      preventAssignment: true,
+      'process.env.DROPBOX_ACCESS_TOKEN': JSON.stringify(process.env.DROPBOX_ACCESS_TOKEN || ''),
+      'process.env.CLIENT_ID': JSON.stringify(process.env.CLIENT_ID || ''),
+      'process.env.CLIENT_SECRET': JSON.stringify(process.env.CLIENT_SECRET || ''),
+      'process.env.REFRESH_TOKEN': JSON.stringify(process.env.REFRESH_TOKEN || '')
     }),
     terser(),
     serve({
