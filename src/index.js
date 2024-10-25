@@ -1,4 +1,4 @@
-import * as jsonData from './data/output.json';
+import jsonData from './data/output.json';
 import { generatePDF } from './generatePDF.js';
 // Expose your functions or objects globally if needed
 window.MyApp = {
@@ -6,7 +6,7 @@ window.MyApp = {
   jsonData: jsonData, 
 };
 
- 
+
 
 document.addEventListener('click', function(event) {
     if (event.target.getAttribute('data-w-id') === '3c2f2722-e3c7-6f05-8576-623a08bbaedd') {
@@ -645,4 +645,3 @@ function getFinalTotal() {
     // Example: Fetching final total from the DOM
     return parseFloat(document.querySelector('[qs-value="total"]').textContent.replace('$', ''));
 }
-
