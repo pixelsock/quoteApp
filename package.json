@@ -45,7 +45,6 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "buffer": "^6.0.3",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2"
   }
