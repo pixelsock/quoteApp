@@ -45,7 +45,7 @@ export default {
       include: 'node_modules/**',
     }),
     json({
-      exclude: ['src/data/output.json']
+      compact: true
     }),
     babel({ babelHelpers: 'bundled', exclude: 'node_modules/**' }),
     builtins(),

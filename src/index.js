@@ -1,4 +1,4 @@
-import jsonData from './data/output.json';
+import * as jsonData from './data/output.json';
 import { generatePDF } from './generatePDF.js';
 // Expose your functions or objects globally if needed
 window.MyApp = {
@@ -645,3 +645,4 @@ function getFinalTotal() {
     // Example: Fetching final total from the DOM
     return parseFloat(document.querySelector('[qs-value="total"]').textContent.replace('$', ''));
 }
+
