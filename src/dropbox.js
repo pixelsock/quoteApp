@@ -19,22 +19,17 @@ console.log('CLIENT_SECRET:', process.env.CLIENT_SECRET ? '[SET]' : '[NOT SET]')
 console.log('REFRESH_TOKEN:', process.env.REFRESH_TOKEN ? '[SET]' : '[NOT SET]');
 
 async function refreshAccessToken() {
-    const url = `${dropboxApiDomain}/oauth2/token`;
+    const url = 'https://api.dropboxapi.com/oauth2/token';
     const body = new URLSearchParams({
         grant_type: 'refresh_token',
-        refresh_token: refreshToken ? '[SET]' : '[NOT SET]',
-        client_id: clientId || '[NOT SET]',
-        client_secret: clientSecret ? '[SET]' : '[NOT SET]'
+        refresh_token: process.env.REFRESH_TOKEN,
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET
     });
 
     console.log('Refreshing access token...');
     console.log('URL:', url);
-    console.log('Body:', {
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken ? '[SET]' : '[NOT SET]',
-        client_id: clientId || '[NOT SET]',
-        client_secret: clientSecret ? '[SET]' : '[NOT SET]'
-    });
+    console.log('Body:', body.toString());
 
     const response = await fetch(url, {
         method: 'POST',
