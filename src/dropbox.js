@@ -1,6 +1,6 @@
 // src/dropbox.js
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config(); // Load environment variables from .env file
 
 import { Buffer } from 'buffer';
 
