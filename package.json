@@ -44,7 +44,6 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.4",
     "browserify": "^17.0.0",
     "buffer": "^6.0.3",
     "jspdf": "^2.5.1",
