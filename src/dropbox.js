@@ -1,13 +1,7 @@
-// src/dropbox.js
-import dotenv from 'dotenv';
-dotenv.config(); // Load environment variables from .env file
-
-import { Buffer } from 'buffer';
-
-let dropboxToken = process.env.DROPBOX_ACCESS_TOKEN;
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const refreshToken = process.env.REFRESH_TOKEN;
+let dropboxToken = process.env.DROPBOX_ACCESS_TOKEN;
 
 const dropboxApiDomain = 'https://api.dropboxapi.com';
 const dropboxContentDomain = 'https://content.dropboxapi.com';
