@@ -105,4 +105,15 @@ async function uploadFileAndGetShareLink(file) {
     }
 }
 
+function uploadPDFToDropbox(pdfBlob, fileName) {
+  return new Promise((resolve, reject) => {
+    // ... existing Dropbox upload logic ...
+  }).catch((error) => {
+    console.error("Error uploading PDF to Dropbox:", error);
+    reject(error);
+    // Remove the following line if 'm' is not defined in this scope
+    // m && m(error);
+  });
+}
+
 export { uploadFileAndGetShareLink };

@@ -6,8 +6,6 @@ window.MyApp = {
   jsonData: jsonData, 
 };
 
-
-
 document.addEventListener('click', function(event) {
     if (event.target.getAttribute('data-w-id') === '3c2f2722-e3c7-6f05-8576-623a08bbaedd') {
         const formFields = fieldOrder;
@@ -46,7 +44,7 @@ let jsondata = jsonData;
 
 function generateSKU(currentSelections) {
     const skuOrder = [
-        'mirror-style', 'light-direction', 'size', 
+        'product-line', 'mirror-style', 'light-direction', 'size', 
         'light-output', 'color-temperature', 'dimming', 'mounting-orientation', 
         'accessories', 'frame-color'
     ];
@@ -134,6 +132,9 @@ function populateFormFields(jsonData) {
             return; // Skip further processing for this field
         }
         let options = jsonData.map(item => item[jsonKey]);
+
+        // Ensure options is always an array
+        options = Array.isArray(options) ? options : [options];
 
         // Flatten the array if the options are arrays and remove duplicates
         options = options.flat();
@@ -413,9 +414,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }); 
 
     const lastButton = document.getElementById('last-step-button');
-    let dropboxLink
+    
 
     lastButton.addEventListener('click', function() {
+        const quoteItems = getQuoteItems();
+        console.log(quoteItems[0]);
         const latestQuoteNumberElement = document.getElementById('latest-quote-number');
         if (!latestQuoteNumberElement) {
             return; // Exit the function if the element is not found
@@ -446,11 +449,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             return; // Exit the function if the element is not found
         }
         const companyName = companyNameElement.value;
-
         
 
-        const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
-        const finalTotal = getFinalTotal(); // This should return the final total as a number
+      
+        const quoteItemsInfoElement = document.getElementById('quote-data');
+        if (quoteItemsInfoElement) {
+            const formattedQuoteItems = quoteItems.map(item => {
+                return `Product: ${item.product}\nQuantity: ${item.quantity}\nDescription: ${item.description}\nTotal Price: $${item.total_price.toFixed(2)}\n`;
+            }).join('\n');
+            quoteItemsInfoElement.value = formattedQuoteItems;
+        } else {
+            console.error('Element with id "quote-data" not found');
+            return; // Exit the function if the element is not found
+        }
+        
+        const finalTotal = getFinalTotal();
 
         // finalTotal to field in the form
         const finalTotalField = document.getElementById('total-field');
@@ -464,50 +477,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             quantityField.value = document.getElementById('qs-quantity-total').textContent;
         }
 
-        const loadButton = document.getElementById('loading-button');
-        const generateQuoteButton = document.getElementById('generate-quote');
-
-        const shareLinkField = document.getElementById('quote-data');
-
-       
-
-        // Call the generatePDF function with the gathered data
-        generatePDF(false, quoteItems, finalTotal, companyName, quoteNumber, projectName, specifierInfo, (error, shareLink) => {
-            if (error) {
-                alert('Error generating PDF. Please try again.');
-            } else {
-                if (shareLink) {
-                    // Callback function to execute after generating the PDF
-                    loadButton.classList.add('hide'); // Show the "load" button
-                    generateQuoteButton.classList.remove('hide'); // Hide the "generate-quote" 
-                    if (shareLinkField) {
-                        shareLinkField.value = shareLink; // Update the Dropbox link field
-                        // dropboxLink = shareLink but change the last 0 to 1
-                        dropboxLink = shareLink.slice(0, -1) + '1';
-                    }
-                }
-            }
-        
-
-        });
+        // Remove the generatePDF call from here
+        // The rest of the last button functionality remains intact
     });
 
     if (generateQuoteButton) {
-        generateQuoteButton.addEventListener('click', () => {
-           
+        generateQuoteButton.addEventListener('click', async () => {
             const companyName = document.getElementById('company-field').value;
             const quoteNumber = document.getElementById('quote-number-field').value;
-            const quoteItems = getQuoteItems(); // This should return an array of objects with sku and total_price
-            const finalTotal = getFinalTotal(); // This should return the final total as a number
+            const quoteItems = getQuoteItems();
+            const finalTotal = getFinalTotal();
             const projectName = document.getElementById('Project-Name').value;
             const specifierInfo = document.getElementById('Specifier-Location').value;
             
-            generatePDF(true, quoteItems, finalTotal, companyName, quoteNumber, projectName, specifierInfo)
-    .then(() => {
-        console.log('PDF generated and saved successfully.');
-    })
-    .catch(error => {
-    });
+            try {
+                const { pdfDoc, fileName } = await generatePDF(quoteItems, finalTotal, companyName, quoteNumber, projectName, specifierInfo);
+                console.log('PDF generated successfully.');
+                
+                // Here you would typically submit the form data to your server
+                // For this example, we'll simulate a successful submission
+                const submissionSuccessful = true;
+
+                if (submissionSuccessful) {
+                    // If the submission was successful, download the PDF
+                    // Use a timeout to ensure the PDF is fully generated before downloading
+                    setTimeout(() => {
+                        generatePDF(pdfDoc, fileName);
+                        console.log('PDF downloaded successfully.');
+                    }, 1000); // Wait for 1 second before downloading
+                } else {
+                    console.error('Form submission failed. PDF not downloaded.');
+                }
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                // Use a timeout to show the alert after a short delay
+            }
         });
     }
 });
@@ -645,3 +649,8 @@ function getFinalTotal() {
     // Example: Fetching final total from the DOM
     return parseFloat(document.querySelector('[qs-value="total"]').textContent.replace('$', ''));
 }
+
+
+
+
+

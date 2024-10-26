@@ -1,16 +1,15 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { uploadFileAndGetShareLink } from './dropbox';
 
 export { generatePDF };
 
-// Adjust the function signature to include new parameters
-function generatePDF(bool, quoteItems, finalTotal, companyName, quoteNumber, projectName, specifierInfo, callback) {
+// Adjust the function signature to remove unnecessary parameters
+function generatePDF(quoteItems, finalTotal, companyName, quoteNumber, projectName, specifierInfo) {
     return new Promise((resolve, reject) => {
         const pdf = new jsPDF({
             orientation: 'p',
             unit: 'pt',
-            format: 'letter', // Assuming letter size
+            format: 'letter',
         });
 
         // Add the logo
@@ -124,25 +123,8 @@ pdf.text([
     "***Please contact us if whiteglove delivery is needed."
 ], 40, notesY, { maxWidth: maxWidth }); // Adjust the X position as needed
 
-        if (bool) {
-            pdf.save(`Matrix-${quoteNumber}.pdf`);
-            resolve();
-        } else {
-            const pdfBlob = pdf.output('blob');
-            const pdfFile = new File([pdfBlob], `Matrix-${quoteNumber}.pdf`, { type: "application/pdf" });
-
-            uploadFileAndGetShareLink(pdfFile)
-                .then(shareLink => {
-                    console.log('Share link:', shareLink);
-                    resolve(shareLink); // Resolve with the share link
-                    if (callback) callback(null, shareLink); // Call the callback with no error and the share link
-                })
-                .catch(error => {
-                    console.error('Error uploading PDF to Dropbox:', error);
-                    reject(error); // Reject the Promise if there's an error
-                    if (callback) callback(error); // Call the callback with the error
-                });
-        }
+        // Remove the conditional block and always save the PDF
+        pdf.save(`Matrix-${quoteNumber}.pdf`);
+        resolve();
     });
 }
-
